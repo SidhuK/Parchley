@@ -1,0 +1,11 @@
+import Foundation
+
+nonisolated public struct ExportItem: Sendable, Equatable { public let documentID: UUID; public let filename: String; public let markdown: String; public init(documentID: UUID, filename: String, markdown: String) { self.documentID = documentID; self.filename = filename; self.markdown = markdown } }
+nonisolated public struct ExportOutcome: Sendable, Equatable { public let item: ExportItem; public let url: URL?; public let error: String? }
+
+nonisolated public struct ExportService: Sendable {
+    public init() {}
+    public func safeFilename(from sourceName: String) throws -> String { let base = sourceName.replacingOccurrences(of: "/", with: "_").replacingOccurrences(of: "\\", with: "_").trimmingCharacters(in: .whitespacesAndNewlines); guard !base.isEmpty, base != ".", base != ".." else { throw DocumentServiceError.unsafeFilename }; return base.hasSuffix(".md") ? base : base + ".md" }
+    public func export(_ item: ExportItem, to folder: URL, overwrite: Bool = false) throws -> URL { let scoped = folder.startAccessingSecurityScopedResource(); defer { if scoped { folder.stopAccessingSecurityScopedResource() } }; try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true); let name = try safeFilename(from: item.filename); var destination = folder.appendingPathComponent(name); if !overwrite { destination = unusedURL(destination) }; let temporary = folder.appendingPathComponent(".\(destination.lastPathComponent).\(UUID().uuidString).tmp"); do { try Data(item.markdown.replacingOccurrences(of: "\r\n", with: "\n").replacingOccurrences(of: "\r", with: "\n").utf8).write(to: temporary, options: .atomic); if overwrite && FileManager.default.fileExists(atPath: destination.path) { _ = try FileManager.default.replaceItemAt(destination, withItemAt: temporary) } else { try FileManager.default.moveItem(at: temporary, to: destination) }; return destination } catch { try? FileManager.default.removeItem(at: temporary); throw DocumentServiceError.diskFailure(error.localizedDescription) } }
+    private func unusedURL(_ original: URL) -> URL { var i = 2; var url = original; while FileManager.default.fileExists(atPath: url.path) { url = original.deletingPathExtension().appendingPathExtension("\(i).md"); i += 1 }; return url }
+}

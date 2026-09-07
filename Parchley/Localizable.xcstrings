@@ -1,0 +1,16 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Add PDFs…" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Add PDFs…" } } } },
+    "Save" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Save" } } } },
+    "Save As…" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Save As…" } } } },
+    "Copy Markdown" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Copy Markdown" } } } },
+    "Find" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Find" } } } },
+    "Use OCR when a page needs it" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Use OCR when a page needs it" } } } },
+    "Keep completed results" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Keep completed results" } } } },
+    "Clear History" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Clear History" } } } },
+    "Cancel download" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Cancel download" } } } },
+    "Remove" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Remove" } } } }
+  },
+  "version" : "1.0"
+}

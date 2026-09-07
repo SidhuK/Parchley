@@ -1,0 +1,19 @@
+[package]
+name = "parchley-core"
+version.workspace = true
+edition.workspace = true
+
+[features]
+default = []
+# Keep runtime and model acquisition outside the binary. The application installs
+# verified model files and passes their absolute directory to the offline pipeline.
+ocr = ["pdf-inspector/ocr"]
+
+[dependencies]
+pdf-inspector.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+tokio-util.workspace = true
+uuid.workspace = true

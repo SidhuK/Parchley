@@ -1,0 +1,16 @@
+Parchley third-party acknowledgements
+
+PDFium native-v7988
+License: BSD-3-Clause. The exact release license text is included in PDFium-LICENSE.
+
+ONNX Runtime 1.27.0
+License: MIT. The exact release license text and dependency notices are included in ONNXRuntime-LICENSE and ONNXRuntime-ThirdPartyNotices.txt.
+
+PP-OCRv6 Small model, oar-ocr v0.7.0
+License: Apache-2.0. Model files are downloaded from the pinned release described in Vendor/Manifests/pp-ocrv6-small.json.
+
+pdf-inspector 1.17.0
+License: MIT. https://github.com/krelinga/pdf-inspector
+
+swift-markdown 0.4.0
+License: Apache-2.0. https://github.com/swiftlang/swift-markdown
