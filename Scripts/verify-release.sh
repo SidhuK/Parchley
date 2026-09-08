@@ -18,6 +18,18 @@ plutil -lint "$app/Contents/Info.plist" >/dev/null || { print -u2 "invalid app I
   print -u2 "unexpected bundle identifier"
   exit 2
 }
+[[ "$(plutil -extract CFBundlePackageType raw -o - "$app/Contents/Info.plist")" == "APPL" ]] || {
+  print -u2 "app bundle is missing CFBundlePackageType=APPL"
+  exit 2
+}
+[[ "$(plutil -extract CFBundleExecutable raw -o - "$app/Contents/Info.plist")" == "Parchley" ]] || {
+  print -u2 "unexpected app executable metadata"
+  exit 2
+}
+[[ -f "$app/Contents/PkgInfo" && "$(<"$app/Contents/PkgInfo")" == "APPL????" ]] || {
+  print -u2 "invalid PkgInfo metadata"
+  exit 2
+}
 [[ -d "$frameworks" ]] || { print -u2 "missing Frameworks directory"; exit 2; }
 [[ -d "$resources" ]] || { print -u2 "missing Resources directory"; exit 2; }
 for license in Parchley-acknowledgements.txt ACKNOWLEDGEMENTS.txt PDFium-LICENSE ONNXRuntime-LICENSE ONNXRuntime-ThirdPartyNotices.txt; do
@@ -82,4 +94,7 @@ while IFS=$'\t' read -r name bytes sha; do
   [[ -n "$name" && "$name" != */* && "$bytes" -gt 0 && ${#sha} -eq 64 ]] || { print -u2 "invalid model manifest entry: $name"; exit 2; }
 done < <(jq -r '.artifacts[] | [.name, .bytes, .sha256] | @tsv' "$manifest")
 codesign --verify --deep --strict "$app"
+if print -r -- "$signature" | rg -q '^Authority=Developer ID Application:'; then
+  spctl --assess --type execute --verbose=2 "$app"
+fi
 print "verified arm64 OCR release bundle: $app"

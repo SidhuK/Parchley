@@ -80,9 +80,12 @@ Build with a Developer ID identity, then check the finished app bundle:
 xcodebuild -project Parchley.xcodeproj -scheme Parchley -configuration Release -sdk macosx build
 Scripts/verify-release.sh /path/to/Parchley.app
 codesign --verify --deep --strict /path/to/Parchley.app
+spctl --assess --type execute --verbose=2 /path/to/Parchley.app
 ```
 
-Distribution builds still need notarization, stapling, and Gatekeeper validation. `Scripts/package-dmg.sh` creates an ad-hoc disk image for local smoke testing. It does not create a distribution-ready release.
+`Scripts/verify-release.sh` rejects malformed bundle metadata, missing native libraries, invalid signatures, and Developer ID builds that fail Gatekeeper assessment. Run it again after notarization and stapling. Test the exact ZIP or disk image you plan to upload by extracting it into a clean directory and checking that extracted app.
+
+`Scripts/package-dmg.sh` creates an ad-hoc disk image for local smoke testing. It does not notarize a distribution build.
 
 ## Build the marketing site
 

@@ -9,7 +9,7 @@
 <p align="center">Turn PDFs into editable Markdown without sending your documents anywhere.</p>
 
 <p align="center">
-  <a href="https://github.com/SidhuK/Parchley/releases">Releases</a>
+  <a href="https://github.com/SidhuK/Parchley/releases/latest">Download</a>
   &nbsp;·&nbsp;
   <a href="https://discord.com/invite/cNqrBfFx7D">Join Discord</a>
   &nbsp;·&nbsp;
@@ -41,7 +41,9 @@ Everything runs on your Mac. Scanned pages use the included OCR model, and docum
 
 Parchley requires macOS 26 or later on an Apple silicon Mac.
 
-The first public build is still being prepared. When it is ready, the disk image will be on the [Releases page](https://github.com/SidhuK/Parchley/releases). Developers can [build the app from source](TECHNICAL.md#build-from-source) now.
+Download the latest signed and notarized build from the [Releases page](https://github.com/SidhuK/Parchley/releases/latest). Unzip it, then move Parchley to your Applications folder.
+
+Parchley is early software. If a PDF converts badly or the app crashes, [open an issue](https://github.com/SidhuK/Parchley/issues) and include the smallest file that reproduces the problem when you can share it safely.
 
 ## How it works
 
