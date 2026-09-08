@@ -24,6 +24,7 @@ The app includes the pinned PP-OCRv6 Small model. Build scripts verify downloade
 | `Packages/ParchleyEngine/` | Swift bridge to the Rust engine |
 | `Rust/` | PDF conversion core and C FFI bridge |
 | `Scripts/` | Native dependency, build, packaging, and release scripts |
+| `Website/` | React marketing site built with Lisse and Vite |
 | `Vendor/Manifests/` | Pinned runtime and OCR metadata |
 | `Tests/Fixtures/` | Small redistributable PDF fixtures |
 
@@ -82,6 +83,18 @@ codesign --verify --deep --strict /path/to/Parchley.app
 ```
 
 Distribution builds still need notarization, stapling, and Gatekeeper validation. `Scripts/package-dmg.sh` creates an ad-hoc disk image for local smoke testing. It does not create a distribution-ready release.
+
+## Build the marketing site
+
+The site requires Node.js 20 or later and pnpm:
+
+```sh
+cd Website
+pnpm install
+pnpm build
+```
+
+Run `pnpm dev` from the same directory for local development.
 
 ## Related files
 

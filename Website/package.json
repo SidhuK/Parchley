@@ -1,0 +1,32 @@
+{
+  "name": "parchley-website",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc -b"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "5.2.8",
+    "@hugeicons/core-free-icons": "^4.3.2",
+    "@hugeicons/react": "^1.1.10",
+    "@lisse/react": "0.7.2",
+    "framer-motion": "12.39.0",
+    "react": "19.2.0",
+    "react-dom": "19.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.13",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "5.0.4",
+    "typescript": "5.9.3",
+    "vite": "7.2.2"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@10.15.1"
+}

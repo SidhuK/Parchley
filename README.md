@@ -65,6 +65,8 @@ Parchley does not need an account. It processes PDFs, OCR, drafts, and exports l
 
 Want to build Parchley yourself or understand how it works? Read the [technical guide](TECHNICAL.md). The [contributing guide](CONTRIBUTING.md) covers development setup and pull requests.
 
+The source for the Parchley marketing site lives in [`Website/`](Website/).
+
 ## Support
 
 Found a bug or have an idea? [Open an issue](https://github.com/SidhuK/Parchley/issues) or [join the Discord](https://discord.com/invite/cNqrBfFx7D). Report security problems privately through [GitHub Security Advisories](https://github.com/SidhuK/Parchley/security/advisories/new).

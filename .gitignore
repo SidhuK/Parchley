@@ -1,5 +1,10 @@
 # macOS and editor noise
 .DS_Store
+
+# Marketing site
+Website/node_modules/
+Website/dist/
+Website/*.tsbuildinfo
 .AppleDouble
 .LSOverride
 *.swp
