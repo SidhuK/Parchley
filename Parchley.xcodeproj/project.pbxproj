@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		7FF1567404D8A6D0082B7E4 /* ParchleyDomain in Frameworks */ = {isa = PBXBuildFile; productRef = 7FF1567204D8A6D0082B7E4 /* ParchleyDomain */; };
+		7FF1567504D8A6D0082B7E4 /* ParchleyEngine in Frameworks */ = {isa = PBXBuildFile; productRef = 7FF1567304D8A6D0082B7E4 /* ParchleyEngine */; };
+		7FF1567704D8A6D0082B7E4 /* ParchleyMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = 7FF1567804D8A6D0082B7E4 /* ParchleyMarkdown */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		7FF15653304D8A6D0082B7E4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -29,9 +35,22 @@
 		7FF1565C304D8A6D0082B7E4 /* ParchleyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ParchleyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		7FF1567A04D8A6D0082B7E4 /* Exceptions for "Parchley" folder in "Parchley" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 7FF1563F304D8A6C0082B7E4 /* Parchley */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		7FF15642304D8A6C0082B7E4 /* Parchley */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				7FF1567A04D8A6D0082B7E4 /* Exceptions for "Parchley" folder in "Parchley" target */,
+			);
 			path = Parchley;
 			sourceTree = "<group>";
 		};
@@ -52,6 +71,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7FF1567404D8A6D0082B7E4 /* ParchleyDomain in Frameworks */,
+				7FF1567504D8A6D0082B7E4 /* ParchleyEngine in Frameworks */,
+				7FF1567704D8A6D0082B7E4 /* ParchleyMarkdown in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -99,6 +121,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7FF15666304D8A6D0082B7E4 /* Build configuration list for PBXNativeTarget "Parchley" */;
 			buildPhases = (
+				7FF1567604D8A6D0082B7E4 /* Embed Rust engine */,
 				7FF1563C304D8A6C0082B7E4 /* Sources */,
 				7FF1563D304D8A6C0082B7E4 /* Frameworks */,
 				7FF1563E304D8A6C0082B7E4 /* Resources */,
@@ -112,6 +135,9 @@
 			);
 			name = Parchley;
 			packageProductDependencies = (
+				7FF1567204D8A6D0082B7E4 /* ParchleyDomain */,
+				7FF1567304D8A6D0082B7E4 /* ParchleyEngine */,
+				7FF1567804D8A6D0082B7E4 /* ParchleyMarkdown */,
 			);
 			productName = Parchley;
 			productReference = 7FF15640304D8A6C0082B7E4 /* Parchley.app */;
@@ -195,6 +221,11 @@
 			);
 			mainGroup = 7FF15637304D8A6C0082B7E4;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				7FF1567004D8A6D0082B7E4 /* XCLocalSwiftPackageReference "Packages/ParchleyDomain" */,
+				7FF1567104D8A6D0082B7E4 /* XCLocalSwiftPackageReference "Packages/ParchleyEngine" */,
+				7FF1567904D8A6D0082B7E4 /* XCLocalSwiftPackageReference "Packages/ParchleyMarkdown" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 7FF15641304D8A6C0082B7E4 /* Products */;
 			projectDirPath = "";
@@ -230,6 +261,30 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		7FF1567604D8A6D0082B7E4 /* Embed Rust engine */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Scripts/embed-rust-library.sh",
+				"$(SRCROOT)/Rust/Cargo.toml",
+				"$(SRCROOT)/Rust/Cargo.lock",
+			);
+			name = "Embed Rust engine";
+			outputPaths = (
+				"$(TARGET_BUILD_DIR)/$(FRAMEWORKS_FOLDER_PATH)/libparchley_ffi.dylib",
+				"$(TARGET_BUILD_DIR)/$(FRAMEWORKS_FOLDER_PATH)/libpdfium.dylib",
+				"$(TARGET_BUILD_DIR)/$(FRAMEWORKS_FOLDER_PATH)/libonnxruntime.dylib",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/zsh;
+			shellScript = "\"$SRCROOT/Scripts/embed-rust-library.sh\"";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		7FF1563C304D8A6C0082B7E4 /* Sources */ = {
@@ -273,6 +328,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -323,7 +379,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 26.5;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -337,6 +393,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -381,7 +438,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 26.5;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -394,6 +451,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Parchley/Parchley.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -401,8 +459,11 @@
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
-				ENABLE_USER_SELECTED_FILES = readonly;
-				GENERATE_INFOPLIST_FILE = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				ENABLE_USER_SELECTED_FILES = readwrite;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Parchley/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -416,8 +477,9 @@
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.2;
 			};
 			name = Debug;
 		};
@@ -426,6 +488,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Parchley/Parchley.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -433,8 +496,11 @@
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
-				ENABLE_USER_SELECTED_FILES = readonly;
-				GENERATE_INFOPLIST_FILE = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				ENABLE_USER_SELECTED_FILES = readwrite;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Parchley/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -448,8 +514,9 @@
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.2;
 			};
 			name = Release;
 		};
@@ -461,15 +528,16 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8S4248F6RV;
 				GENERATE_INFOPLIST_FILE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 26.5;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.karatsidhu.ParchleyTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.2;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Parchley.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Parchley";
 			};
 			name = Debug;
@@ -482,15 +550,16 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8S4248F6RV;
 				GENERATE_INFOPLIST_FILE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 26.5;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.karatsidhu.ParchleyTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.2;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Parchley.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Parchley";
 			};
 			name = Release;
@@ -508,8 +577,9 @@
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.2;
 				TEST_TARGET_NAME = Parchley;
 			};
 			name = Debug;
@@ -527,8 +597,9 @@
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.2;
 				TEST_TARGET_NAME = Parchley;
 			};
 			name = Release;
@@ -573,6 +644,39 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		7FF1567004D8A6D0082B7E4 /* XCLocalSwiftPackageReference "Packages/ParchleyDomain" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/ParchleyDomain;
+		};
+		7FF1567104D8A6D0082B7E4 /* XCLocalSwiftPackageReference "Packages/ParchleyEngine" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/ParchleyEngine;
+		};
+		7FF1567904D8A6D0082B7E4 /* XCLocalSwiftPackageReference "Packages/ParchleyMarkdown" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/ParchleyMarkdown;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		7FF1567204D8A6D0082B7E4 /* ParchleyDomain */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7FF1567004D8A6D0082B7E4 /* XCLocalSwiftPackageReference "Packages/ParchleyDomain" */;
+			productName = ParchleyDomain;
+		};
+		7FF1567304D8A6D0082B7E4 /* ParchleyEngine */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7FF1567104D8A6D0082B7E4 /* XCLocalSwiftPackageReference "Packages/ParchleyEngine" */;
+			productName = ParchleyEngine;
+		};
+		7FF1567804D8A6D0082B7E4 /* ParchleyMarkdown */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7FF1567904D8A6D0082B7E4 /* XCLocalSwiftPackageReference "Packages/ParchleyMarkdown" */;
+			productName = ParchleyMarkdown;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 7FF15638304D8A6C0082B7E4 /* Project object */;
 }

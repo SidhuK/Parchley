@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "id": "pp-ocrv6-small",
+  "revision": "oar-ocr-v0.7.0",
+  "allowed_hosts": ["github.com"],
+  "license": "Apache-2.0",
+  "artifacts": [
+    {"name":"pp-ocrv6_small_det.onnx","url":"https://github.com/GreatV/oar-ocr/releases/download/v0.7.0/pp-ocrv6_small_det.onnx","bytes":9880512,"sha256":"d73e0058b7a8086bbd57f3d10b8bcd4ff95363f67e06e2762b5e814fe9c9410e"},
+    {"name":"pp-ocrv6_small_rec.onnx","url":"https://github.com/GreatV/oar-ocr/releases/download/v0.7.0/pp-ocrv6_small_rec.onnx","bytes":21159378,"sha256":"5435fd747c9e0efe15a96d0b378d5bd157e9492ed8fd80edf08f30d02fa24634"},
+    {"name":"ppocrv6_dict.txt","url":"https://github.com/GreatV/oar-ocr/releases/download/v0.7.0/ppocrv6_dict.txt","bytes":74947,"sha256":"b5f2bfe2bdd9448429e3e82b51c789775d9b42f2403d082b00662eb77e401c5d"}
+  ]
+}

@@ -1,38 +1,112 @@
-//
-//  ParchleyTests.swift
-//  ParchleyTests
-//
-//  Created by Karat Sidhu on 06/09/26.
-//
-
+import Foundation
 import XCTest
+
 @testable import Parchley
 
+@MainActor
 final class ParchleyTests: XCTestCase {
+  func testPreferencesUseDefaultsAndPersistChanges() throws {
+    let suiteName = "ParchleyTests.preferences.\(UUID().uuidString)"
+    let defaults = try XCTUnwrap(UserDefaults(suiteName: suiteName))
+    defer { defaults.removePersistentDomain(forName: suiteName) }
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    let preferences = AppPreferences(defaults: defaults)
+    XCTAssertTrue(preferences.ocrEnabled)
+    XCTAssertEqual(preferences.retentionDays, 30)
+
+    preferences.ocrEnabled = false
+    preferences.retentionDays = 7
+
+    let reopened = AppPreferences(defaults: defaults)
+    XCTAssertFalse(reopened.ocrEnabled)
+    XCTAssertEqual(reopened.retentionDays, 7)
+  }
+
+  func testPreferencesRepairUnsupportedRetentionValue() throws {
+    let suiteName = "ParchleyTests.preferences.invalid.\(UUID().uuidString)"
+    let defaults = try XCTUnwrap(UserDefaults(suiteName: suiteName))
+    defer { defaults.removePersistentDomain(forName: suiteName) }
+    defaults.set(-1, forKey: "retentionDays")
+
+    let preferences = AppPreferences(defaults: defaults)
+
+    XCTAssertEqual(preferences.retentionDays, 30)
+  }
+
+  func testImportReportsUnavailableWorkspace() {
+    let suiteName = "ParchleyTests.workspace.unavailable.\(UUID().uuidString)"
+    let defaults = UserDefaults(suiteName: suiteName)!
+    defer { defaults.removePersistentDomain(forName: suiteName) }
+    let expectedMessage = "The workspace could not be initialized."
+    let dependencies = ParchleyDependencies(
+      store: nil,
+      coordinator: nil,
+      ocrManager: nil,
+      ocrManifest: .unavailable,
+      preferences: AppPreferences(defaults: defaults),
+      initializationMessage: expectedMessage
+    )
+    let model = ParchleyAppModel(dependencies: dependencies)
+
+    model.importFiles([URL(fileURLWithPath: "/tmp/document.pdf")])
+
+    XCTAssertEqual(model.alertMessage, expectedMessage)
+  }
+
+  func testPinnedOCRManifestMatchesTheReleaseMetadata() throws {
+    let manifest = try OCRModelCatalog.defaultManifest()
+
+    XCTAssertEqual(manifest.revision, "oar-ocr-v0.7.0")
+    XCTAssertEqual(
+      manifest.artifacts.map(\.name),
+      [
+        "pp-ocrv6_small_det.onnx",
+        "pp-ocrv6_small_rec.onnx",
+        "ppocrv6_dict.txt",
+      ]
+    )
+    XCTAssertTrue(
+      manifest.artifacts.allSatisfy { artifact in
+        artifact.byteCount > 0 && artifact.sha256.count == 64 && artifact.url.scheme == "https"
+      })
+  }
+
+  func testUserFacingErrorsExplainHowToRecover() {
+    let errors: [DocumentServiceError] = [
+      .unsupportedFile,
+      .fileTooLarge(42),
+      .unavailable,
+      .invalidPDF,
+      .hashMismatch,
+      .cancelled,
+      .passwordRequired,
+      .modelRequired,
+      .unsafeFilename,
+      .diskFailure("disk"),
+    ]
+
+    for error in errors {
+      XCTAssertFalse(error.localizedDescription.isEmpty)
+      XCTAssertFalse(error.recoverySuggestion?.isEmpty ?? true)
     }
+  }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
+  func testDependenciesShareTheInjectedDateProvider() {
+    let fixedDate = Date(timeIntervalSince1970: 1234)
+    let suiteName = "ParchleyTests.dependencies.\(UUID().uuidString)"
+    let defaults = UserDefaults(suiteName: suiteName)!
+    defer { defaults.removePersistentDomain(forName: suiteName) }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-        // XCTest Documentation
-        // https://developer.apple.com/documentation/xctest
-    }
+    let dependencies = ParchleyDependencies(
+      store: nil,
+      coordinator: nil,
+      ocrManager: nil,
+      ocrManifest: .unavailable,
+      preferences: AppPreferences(defaults: defaults),
+      dateProvider: DateProvider { fixedDate }
+    )
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
-
+    XCTAssertEqual(dependencies.dateProvider.now(), fixedDate)
+    XCTAssertEqual(dependencies.now(), fixedDate)
+  }
 }

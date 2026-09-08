@@ -1,0 +1,39 @@
+# macOS and editor noise
+.DS_Store
+.AppleDouble
+.LSOverride
+*.swp
+*.swo
+
+# Xcode and Swift Package Manager state
+DerivedData/
+.derivedData/
+.clang-module-cache/
+build/
+dist/
+.build/
+.swiftpm/
+xcuserdata/
+*.xcuserstate
+*.xccheckout
+*.moved-aside
+*.hmap
+*.dSYM/
+*.dSYM.zip
+*.app/
+*.ipa
+
+# Rust build output
+target/
+Rust/target/
+
+# Downloaded OCR runtimes and model files
+Vendor/Native/
+Vendor/Models/
+*.onnx
+*.dylib
+
+# Local release artifacts
+*.dmg
+*.pkg
+*.zip

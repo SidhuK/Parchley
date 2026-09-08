@@ -1,0 +1,544 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "%@ · %@ · runs locally" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ · %2$@ · runs locally"
+          }
+        }
+      }
+    },
+    "%@ of %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ of %2$@"
+          }
+        }
+      }
+    },
+    "%@ progress" : {
+
+    },
+    "%lld of %lld pages" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld of %2$lld pages"
+          }
+        }
+      }
+    },
+    "7 days" : {
+
+    },
+    "30 days" : {
+
+    },
+    "90 days" : {
+
+    },
+    "A newer conversion will create a new generated revision. Replace draft discards the saved edits after the conversion succeeds. Keep draft restores them on top of the new result." : {
+
+    },
+    "About Parchley" : {
+
+    },
+    "Acknowledgements" : {
+
+    },
+    "Add" : {
+
+    },
+    "Add a PDF" : {
+
+    },
+    "Add one or more PDF files" : {
+
+    },
+    "Add PDFs" : {
+
+    },
+    "Cancel" : {
+
+    },
+    "Cancel Conversion" : {
+
+    },
+    "Cancel download" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel download"
+          }
+        }
+      }
+    },
+    "Cancelled" : {
+
+    },
+    "Checking downloaded files…" : {
+
+    },
+    "Choose a component to read its license and attribution." : {
+
+    },
+    "Choose one or more PDF files. You can also drop files here." : {
+
+    },
+    "Choose PDFs…" : {
+
+    },
+    "Clear completed history?" : {
+
+    },
+    "Clear document list?" : {
+
+    },
+    "Clear Document List…" : {
+
+    },
+    "Clear History" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear History"
+          }
+        }
+      }
+    },
+    "Clear List" : {
+
+    },
+    "Clear List…" : {
+
+    },
+    "Close" : {
+
+    },
+    "Completed" : {
+
+    },
+    "Conversion" : {
+
+    },
+    "Convert this PDF to create editable Markdown." : {
+
+    },
+    "Convert this PDF to preview the Markdown." : {
+
+    },
+    "Converting" : {
+
+    },
+    "Converting progress" : {
+
+    },
+    "Copy Markdown" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy Markdown"
+          }
+        }
+      }
+    },
+    "Could not clear history: %@" : {
+
+    },
+    "Could not prune history: %@" : {
+
+    },
+    "Could not remove all documents: %@" : {
+
+    },
+    "Document" : {
+
+    },
+    "Document view" : {
+
+    },
+    "Documents" : {
+
+    },
+    "Documents stay on this Mac" : {
+
+    },
+    "Download and continue" : {
+
+    },
+    "Download model" : {
+
+    },
+    "Downloading %@" : {
+
+    },
+    "Downloading OCR model" : {
+
+    },
+    "Downloading…" : {
+
+    },
+    "Drop one or more PDFs here, or choose files from your Mac." : {
+
+    },
+    "Drop to add PDFs" : {
+
+    },
+    "Engine" : {
+
+    },
+    "Export All…" : {
+
+    },
+    "Export…" : {
+
+    },
+    "Failed" : {
+
+    },
+    "Find" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Find"
+          }
+        }
+      }
+    },
+    "Follow on X" : {
+
+    },
+    "Free and open-source software for turning PDFs into Markdown on your Mac." : {
+
+    },
+    "General" : {
+
+    },
+    "Hide conversion details" : {
+
+    },
+    "Hide Inspector" : {
+
+    },
+    "History" : {
+
+    },
+    "Included" : {
+
+    },
+    "Included with Parchley" : {
+
+    },
+    "Installed" : {
+
+    },
+    "Interrupted" : {
+
+    },
+    "Join Discord" : {
+
+    },
+    "Keep completed results" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep completed results"
+          }
+        }
+      }
+    },
+    "Keep draft" : {
+
+    },
+    "Local PDF to Markdown review" : {
+
+    },
+    "Markdown is not ready" : {
+
+    },
+    "Model" : {
+
+    },
+    "Model storage is unavailable." : {
+
+    },
+    "More" : {
+
+    },
+    "More document actions" : {
+
+    },
+    "Move Earlier" : {
+
+    },
+    "Native text" : {
+
+    },
+    "Needs attention" : {
+
+    },
+    "Needs review" : {
+
+    },
+    "No conversion result yet." : {
+
+    },
+    "No page metadata was recorded." : {
+
+    },
+    "Not downloaded" : {
+
+    },
+    "Not selected" : {
+
+    },
+    "OCR model" : {
+
+    },
+    "OCR model download progress" : {
+
+    },
+    "OCR model required" : {
+
+    },
+    "OCR model support is unavailable." : {
+
+    },
+    "Older completed results are removed automatically. Saved drafts stay available when history is cleared." : {
+
+    },
+    "Only PDF files can be imported." : {
+
+    },
+    "Open PDFs…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open PDFs…"
+          }
+        }
+      }
+    },
+    "Open Source" : {
+
+    },
+    "Open Source Software" : {
+
+    },
+    "PaddleOCR v6 small" : {
+
+    },
+    "Page %lld" : {
+
+    },
+    "Page %lld, %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Page %1$lld, %2$@"
+          }
+        }
+      }
+    },
+    "Page methods" : {
+
+    },
+    "Pages" : {
+
+    },
+    "Parchley" : {
+
+    },
+    "Parchley could not open its workspace." : {
+
+    },
+    "Parchley keeps conversion local. OCR is used only for pages without selectable text." : {
+
+    },
+    "Parchley uses swift-markdown, pdf-inspector, PDFium, ONNX Runtime, and PP-OCRv6 Small." : {
+
+    },
+    "Password required" : {
+
+    },
+    "PDF" : {
+
+    },
+    "PDF is not ready" : {
+
+    },
+    "PDF password" : {
+
+    },
+    "Preparing document" : {
+
+    },
+    "Preview" : {
+
+    },
+    "Preview is not ready" : {
+
+    },
+    "Read Privacy Policy" : {
+
+    },
+    "Remove" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove"
+          }
+        }
+      }
+    },
+    "Remove Selected Document" : {
+
+    },
+    "Remove this document?" : {
+
+    },
+    "Removing" : {
+
+    },
+    "Removing…" : {
+
+    },
+    "Replace draft" : {
+
+    },
+    "Replace edited Markdown?" : {
+
+    },
+    "Report a Security Issue" : {
+
+    },
+    "Report an Issue" : {
+
+    },
+    "Retry" : {
+
+    },
+    "Saved drafts remain available for review." : {
+
+    },
+    "Search PDFs" : {
+
+    },
+    "Select a component" : {
+
+    },
+    "Select a document before converting." : {
+
+    },
+    "Select to review this PDF" : {
+
+    },
+    "Selected" : {
+
+    },
+    "Settings" : {
+
+    },
+    "Show conversion details" : {
+
+    },
+    "Show Inspector" : {
+
+    },
+    "Skip OCR" : {
+
+    },
+    "Source" : {
+
+    },
+    "Stopping after the current operation" : {
+
+    },
+    "Switch document view" : {
+
+    },
+    "The conversion engine is unavailable." : {
+
+    },
+    "The document is still being prepared." : {
+
+    },
+    "The history retention period could not be calculated." : {
+
+    },
+    "The staged PDF is no longer available. Import it again." : {
+
+    },
+    "This document is still being prepared. Please wait a moment and try again." : {
+
+    },
+    "This removes all imported PDFs, conversion results, and drafts from Parchley." : {
+
+    },
+    "Unable to complete action" : {
+
+    },
+    "Unavailable" : {
+
+    },
+    "Unknown" : {
+
+    },
+    "Unlock" : {
+
+    },
+    "Use OCR when a page needs it" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use OCR when a page needs it"
+          }
+        }
+      }
+    },
+    "Verifying" : {
+
+    },
+    "Verifying…" : {
+
+    },
+    "Version %@" : {
+
+    },
+    "View project website" : {
+
+    },
+    "View Releases" : {
+
+    },
+    "View Repository" : {
+
+    },
+    "Waiting" : {
+
+    },
+    "Warnings" : {
+
+    },
+    "Working…" : {
+
+    }
+  },
+  "version" : "1.0"
+}

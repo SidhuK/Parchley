@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "platform": "macos-arm64",
+  "allowed_hosts": ["github.com"],
+  "pdfium": {
+    "revision": "native-v7988",
+    "url": "https://github.com/firecrawl/pdfium-rs/releases/download/native-v7988/firecrawl-pdfium-mac-arm64.tgz",
+    "bytes": 3460583,
+    "sha256": "4168356c2e62ad5e79553e2e9162f5c99949759d90cb83876a50311f0c32b9b3",
+    "license": "BSD-3-Clause and bundled notices in archive"
+  },
+  "onnx_runtime": {
+    "revision": "1.27.0",
+    "url": "https://github.com/microsoft/onnxruntime/releases/download/v1.27.0/onnxruntime-osx-arm64-1.27.0.tgz",
+    "bytes": 32485368,
+    "sha256": "545e81c58152353acb0d1e8bd6ce4b62f830c0961f5b3acfedc790ffd76e477a",
+    "license": "MIT and third-party notices in archive"
+  }
+}

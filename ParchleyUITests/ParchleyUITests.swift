@@ -1,43 +1,108 @@
-//
-//  ParchleyUITests.swift
-//  ParchleyUITests
-//
-//  Created by Karat Sidhu on 06/09/26.
-//
-
+import AppKit
+import CoreGraphics
 import XCTest
 
 final class ParchleyUITests: XCTestCase {
+  override func setUpWithError() throws {
+    continueAfterFailure = false
+  }
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+  @MainActor
+  func testLaunchExposesAccessibleDocumentControls() throws {
+    let app = launchApp()
 
-        // In UI tests it is usually best to stop immediately when a failure occurs.
-        continueAfterFailure = false
+    XCTAssertTrue(app.windows.firstMatch.waitForExistence(timeout: 10))
+    let add = app.buttons["Add PDFs"].firstMatch
+    XCTAssertTrue(add.waitForExistence(timeout: 10))
+    XCTAssertEqual(add.label, "Add PDFs")
+    XCTAssertTrue(app.buttons["More"].exists)
+    XCTAssertTrue(app.staticTexts["Parchley"].exists)
+  }
 
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
+  @MainActor
+  func testImportConvertEditAndExport() throws {
+    let fixture = try makeFixturePDF()
+    let output = FileManager.default.temporaryDirectory
+      .appendingPathComponent("Parchley UI Export \(UUID().uuidString).md")
+    defer {
+      try? FileManager.default.removeItem(at: fixture)
+      try? FileManager.default.removeItem(at: output)
     }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
+    let app = launchApp()
+    chooseFile(fixture, in: app, using: "Open")
 
-    @MainActor
-    func testExample() throws {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
-        app.launch()
+    let document = app.staticTexts["UITest Fixture"].firstMatch
+    XCTAssertTrue(document.waitForExistence(timeout: 10))
+    XCTAssertEqual(document.label, "UITest Fixture")
 
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // XCUIAutomation Documentation
-        // https://developer.apple.com/documentation/xcuiautomation
-    }
+    let editor = app.textViews["Markdown source editor"].firstMatch
+    XCTAssertTrue(editor.waitForExistence(timeout: 20))
+    editor.click()
+    editor.typeText("\nEdited in UI test")
 
-    @MainActor
-    func testLaunchPerformance() throws {
-        // This measures how long it takes to launch your application.
-        measure(metrics: [XCTApplicationLaunchMetric()]) {
-            XCUIApplication().launch()
-        }
+    let export = app.buttons["Export…"].firstMatch
+    XCTAssertTrue(export.waitForExistence(timeout: 5))
+    export.click()
+    let save = app.dialogs["Save"].firstMatch
+    XCTAssertTrue(save.waitForExistence(timeout: 5))
+    goToFolder(output.deletingLastPathComponent(), in: app, dialog: save)
+    save.textFields.firstMatch.click()
+    save.textFields.firstMatch.typeText(output.lastPathComponent)
+    save.buttons["Save"].click()
+
+    XCTAssertTrue(FileManager.default.fileExists(atPath: output.path))
+    let contents = try String(contentsOf: output, encoding: .utf8)
+    XCTAssertTrue(contents.contains("Edited in UI test"))
+  }
+
+  @MainActor
+  private func launchApp() -> XCUIApplication {
+    let app = XCUIApplication()
+    app.launchArguments = ["-ApplePersistenceIgnoreState", "YES"]
+    app.launch()
+    return app
+  }
+
+  @MainActor
+  private func chooseFile(_ file: URL, in app: XCUIApplication, using dialogName: String) {
+    let add = app.buttons["Add PDFs"].firstMatch
+    XCTAssertTrue(add.waitForExistence(timeout: 10))
+    add.click()
+
+    let open = app.dialogs[dialogName].firstMatch
+    XCTAssertTrue(open.waitForExistence(timeout: 5))
+    goToFolder(file, in: app, dialog: open)
+    open.buttons["Open"].click()
+  }
+
+  @MainActor
+  private func goToFolder(_ url: URL, in app: XCUIApplication, dialog: XCUIElement) {
+    dialog.typeKey("g", modifierFlags: [.command, .shift])
+    let goToFolder = app.sheets.firstMatch
+    XCTAssertTrue(goToFolder.waitForExistence(timeout: 3))
+    goToFolder.textFields.firstMatch.typeText(url.path)
+    goToFolder.buttons["Go"].click()
+  }
+
+  private func makeFixturePDF() throws -> URL {
+    let url = FileManager.default.temporaryDirectory
+      .appendingPathComponent("Parchley UITest Fixture \(UUID().uuidString).pdf")
+    var mediaBox = CGRect(x: 0, y: 0, width: 612, height: 792)
+    guard let context = CGContext(url as CFURL, mediaBox: &mediaBox, nil) else {
+      throw NSError(domain: "ParchleyUITests", code: 1)
     }
+    context.beginPDFPage(nil)
+    let attributes: [NSAttributedString.Key: Any] = [
+      .font: NSFont.systemFont(ofSize: 24)
+    ]
+    NSGraphicsContext.saveGraphicsState()
+    NSGraphicsContext.current = NSGraphicsContext(cgContext: context, flipped: false)
+    NSAttributedString(string: "UITest Fixture", attributes: attributes)
+      .draw(at: CGPoint(x: 72, y: 700))
+    NSGraphicsContext.restoreGraphicsState()
+    context.endPDFPage()
+    context.closePDF()
+    return url
+  }
 }
