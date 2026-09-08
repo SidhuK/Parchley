@@ -2,7 +2,7 @@
   "name": "Parchley",
   "short_name": "Parchley",
   "description": "Turn PDFs into editable Markdown on your Mac.",
-  "start_url": "/Parchley/",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#f7f2e7",
   "theme_color": "#f7f2e7",
