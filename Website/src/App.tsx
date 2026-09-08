@@ -19,7 +19,7 @@ import { useState, type ReactNode } from "react";
 
 const links = {
   repository: "https://github.com/SidhuK/Parchley/",
-  releases: "https://github.com/SidhuK/Parchley/releases",
+  download: "https://github.com/SidhuK/Parchley/releases/download/v1.0.0/Parchley.zip",
   discord: "https://discord.com/invite/cNqrBfFx7D",
   x: "https://x.com/karat_sidhu",
   privacy: "https://github.com/SidhuK/Parchley/blob/main/PRIVACY.md",
@@ -36,7 +36,7 @@ const cardShadow = [
 ];
 
 const actions = [
-  { label: "Download Parchley", detail: "macOS 26 · Apple silicon", href: links.releases, icon: FileDownloadIcon },
+  { label: "Download Parchley", detail: "macOS 26 · Apple silicon", href: links.download, icon: FileDownloadIcon },
   { label: "Read the source", detail: "SwiftUI · Rust · MIT", href: links.repository, icon: SourceCodeIcon },
   { label: "Join the Discord", detail: "Questions, ideas, and releases", href: links.discord, icon: DiscordIcon },
 ] as const;
