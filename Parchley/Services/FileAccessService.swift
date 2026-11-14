@@ -11,9 +11,11 @@ public struct StagedDocument: Sendable, Equatable {
 }
 
 public struct FileAccessService: Sendable {
+    public static let defaultMaximumBytes: Int64 = 1_000_000_000
+
     public let maximumBytes: Int64
 
-    public nonisolated init(maximumBytes: Int64 = 250 * 1024 * 1024) {
+    public nonisolated init(maximumBytes: Int64 = FileAccessService.defaultMaximumBytes) {
         self.maximumBytes = max(1, maximumBytes)
     }
 
