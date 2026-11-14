@@ -105,7 +105,7 @@ public struct PDFPreview: NSViewRepresentable {
         return document
     }
 
-    private static let maximumBytes: Int64 = 250 * 1024 * 1024
+    static let maximumBytes = FileAccessService.defaultMaximumBytes
     private static let maximumPageCount = 10_000
 
     private static func sanitize(_ document: PDFDocument) {

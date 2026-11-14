@@ -7,6 +7,40 @@ import XCTest
 
 @MainActor
 final class AdversarialFilesystemTests: XCTestCase {
+  func testPDFImportAndPreviewUseOneGigabyteLimitAndImportEnforcesBoundary() throws {
+    let maximumBytes: Int64 = 1_000_000_000
+    XCTAssertEqual(FileAccessService.defaultMaximumBytes, maximumBytes)
+    XCTAssertEqual(FileAccessService().maximumBytes, maximumBytes)
+    XCTAssertEqual(PDFPreview.maximumBytes, maximumBytes)
+
+    let folder = try temporaryFolder()
+    defer { try? FileManager.default.removeItem(at: folder) }
+    let source = folder.appendingPathComponent("boundary.pdf")
+    let contents = Data("%PDF-1.7\n".utf8)
+    try contents.write(to: source)
+
+    for limit in [Int64(contents.count), Int64(contents.count + 1)] {
+      let staged = try FileAccessService(maximumBytes: limit).stage(
+        source,
+        documentID: UUID(),
+        directory: folder.appendingPathComponent("accepted-\(limit)")
+      )
+      XCTAssertEqual(staged.byteCount, Int64(contents.count))
+    }
+
+    XCTAssertThrowsError(
+      try FileAccessService(maximumBytes: Int64(contents.count - 1)).stage(
+        source,
+        documentID: UUID(),
+        directory: folder.appendingPathComponent("rejected")
+      )
+    ) { error in
+      guard case DocumentServiceError.fileTooLarge = error else {
+        return XCTFail("expected a size error, got \(error)")
+      }
+    }
+  }
+
   func testStageRejectsOversizedPDFAndCleansTemporaryFiles() throws {
     let folder = try temporaryFolder()
     defer { try? FileManager.default.removeItem(at: folder) }
