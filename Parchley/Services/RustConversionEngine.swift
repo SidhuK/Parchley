@@ -111,7 +111,7 @@ private actor HandleRegistry {
     func cancel(_ id: UUID) { values[id]?.requestCancel() }
 }
 
-private struct Manifest: Decodable {
+nonisolated private struct Manifest: Decodable {
     let schemaVersion: Int
     let documentID: UUID
     let attemptID: UUID

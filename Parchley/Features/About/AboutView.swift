@@ -11,7 +11,7 @@ struct AboutView: View {
             Text("Version \(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? String(localized: "Unknown"))")
             Divider()
             Text("Acknowledgements").font(.headline)
-            Text("Parchley uses swift-markdown, pdf-inspector, PDFium, ONNX Runtime, and PP-OCRv6 Small.")
+            Text("Parchley uses swift-markdown, pdf-inspector, PDFium, ONNX Runtime, PP-OCRv6 Small, MLX Swift, MLX Swift LM, and swift-transformers. Optional user-supplied SmolVLM models are Apache 2.0.")
                 .font(.caption).multilineTextAlignment(.center).foregroundStyle(.secondary)
             Text(notices).font(.system(.caption2, design: .monospaced)).textSelection(.enabled).frame(maxWidth: .infinity, alignment: .leading)
           }

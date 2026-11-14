@@ -5,13 +5,18 @@ nonisolated public struct ConversionOptions: Sendable, Equatable {
     public var ocrMode: String
     public var password: String?
     public var modelDirectory: URL?
+    public var localVLMEnabled: Bool
+    public var localVLMModelDirectory: URL?
 
     public init(pageSelection: [Int] = [], ocrMode: String = "auto", password: String? = nil,
-                modelDirectory: URL? = nil) {
+                modelDirectory: URL? = nil, localVLMEnabled: Bool = false,
+                localVLMModelDirectory: URL? = nil) {
         self.pageSelection = pageSelection
         self.ocrMode = ocrMode
         self.password = password
         self.modelDirectory = modelDirectory
+        self.localVLMEnabled = localVLMEnabled
+        self.localVLMModelDirectory = localVLMModelDirectory
     }
 }
 
@@ -47,7 +52,7 @@ nonisolated public struct ConversionEngineProgress: Sendable, Equatable {
     }
 }
 
-public protocol ConversionEngine: Sendable {
+nonisolated public protocol ConversionEngine: Sendable {
     func convert(input: URL, attempt: ConversionAttempt) async throws -> EngineResult
     func convert(input: URL, attempt: ConversionAttempt, options: ConversionOptions) async throws -> EngineResult
     func convert(input: URL, attempt: ConversionAttempt, options: ConversionOptions,

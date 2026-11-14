@@ -26,7 +26,7 @@
 
 Parchley is a free, open-source Mac app for turning PDFs into Markdown. Add one file or a whole batch. Parchley converts them in order, then gives you the original PDF, editable Markdown, and a rendered preview in one window.
 
-Everything runs on your Mac. Scanned pages use the included OCR model, and document contents never leave your computer.
+Everything runs on your Mac. Scanned pages use the included OCR model, and document contents never leave your computer. An optional, off-by-default MLX vision model can add local supplemental notes to OCR results; you supply its model folder.
 
 ## What you can do
 
@@ -62,6 +62,8 @@ Parchley is early software. If a PDF converts badly or the app crashes, [open an
 ## Privacy
 
 Parchley does not need an account. It processes PDFs, OCR, drafts, and exports locally. Read the [privacy policy](PRIVACY.md) for storage and cleanup details.
+
+Optional local vision assistance can be enabled in Settings. Choose an MLX-format model from the links there, download it yourself, and select its folder. Model downloads and inference are not handled by Parchley; model size and memory requirements vary.
 
 ## Build or contribute
 

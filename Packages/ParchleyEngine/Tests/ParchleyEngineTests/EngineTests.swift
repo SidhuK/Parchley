@@ -5,6 +5,22 @@ import XCTest
 @testable import ParchleyEngine
 
 final class EngineTests: XCTestCase {
+  func testLocalVLMModelFolderRequiresTokenizerConfigAndWeights() throws {
+    let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+    try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+    defer { try? FileManager.default.removeItem(at: root) }
+
+    try Data("{}".utf8).write(to: root.appendingPathComponent("config.json"))
+    try Data("{}".utf8).write(to: root.appendingPathComponent("tokenizer.json"))
+    XCTAssertThrowsError(try LocalVLMModelFolder.validate(root))
+
+    try Data().write(to: root.appendingPathComponent("model.safetensors"))
+    XCTAssertNoThrow(try LocalVLMModelFolder.validate(root))
+
+    try FileManager.default.removeItem(at: root.appendingPathComponent("tokenizer.json"))
+    XCTAssertThrowsError(try LocalVLMModelFolder.validate(root))
+  }
+
   func testAdapterPreservesAttemptID() throws {
     let id = AttemptID()
     let backend = TestBackend()

@@ -110,7 +110,10 @@ struct ParchleyDependencies {
         do {
             let rust = try RustEngine()
             let coordinator = ConversionCoordinator(
-                engine: RustConversionEngine(engine: rust),
+                engine: LocalVLMConversionEngine(
+                    base: RustConversionEngine(engine: rust),
+                    assistant: MLXLocalVLMPageAssistant()
+                ),
                 store: workspace,
                 dateProvider: dateProvider
             )
@@ -158,14 +161,73 @@ final class AppPreferences {
             defaults.set(retentionDays, forKey: "retentionDays")
         }
     }
+    var localVLMEnabled: Bool {
+        didSet { defaults.set(localVLMEnabled, forKey: "localVLMEnabled") }
+    }
+    private(set) var localVLMModelBookmark: Data? {
+        didSet { defaults.set(localVLMModelBookmark, forKey: "localVLMModelBookmark") }
+    }
+    private(set) var localVLMModelName: String? {
+        didSet { defaults.set(localVLMModelName, forKey: "localVLMModelName") }
+    }
 
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
-        defaults.register(defaults: ["ocrEnabled": true, "retentionDays": 30])
+        defaults.register(defaults: ["ocrEnabled": true, "retentionDays": 30, "localVLMEnabled": false])
         self.ocrEnabled = defaults.bool(forKey: "ocrEnabled")
         let retentionDays = defaults.integer(forKey: "retentionDays")
         self.retentionDays = Self.supportedRetentionDays.contains(retentionDays)
             ? retentionDays
             : 30
+        self.localVLMEnabled = defaults.bool(forKey: "localVLMEnabled")
+        self.localVLMModelBookmark = defaults.data(forKey: "localVLMModelBookmark")
+        self.localVLMModelName = defaults.string(forKey: "localVLMModelName")
+    }
+
+    func setLocalVLMModelDirectory(_ directory: URL) throws {
+        let accessing = directory.startAccessingSecurityScopedResource()
+        defer {
+            if accessing {
+                directory.stopAccessingSecurityScopedResource()
+            }
+        }
+        try LocalVLMModelFolder.validate(directory)
+        let bookmark = try directory.bookmarkData(
+            options: [.withSecurityScope],
+            includingResourceValuesForKeys: nil,
+            relativeTo: nil
+        )
+        localVLMModelBookmark = bookmark
+        localVLMModelName = directory.lastPathComponent
+    }
+
+    func clearLocalVLMModelDirectory() {
+        localVLMEnabled = false
+        localVLMModelBookmark = nil
+        localVLMModelName = nil
+    }
+
+    func resolveLocalVLMModelDirectory() throws -> URL? {
+        guard let bookmark = localVLMModelBookmark else { return nil }
+        var isStale = false
+        let directory = try URL(
+            resolvingBookmarkData: bookmark,
+            options: [.withSecurityScope, .withoutUI],
+            relativeTo: nil,
+            bookmarkDataIsStale: &isStale
+        )
+        if isStale {
+            guard directory.startAccessingSecurityScopedResource() else {
+                throw LocalVLMModelFolderError.unavailable
+            }
+            defer { directory.stopAccessingSecurityScopedResource() }
+            let refreshedBookmark = try directory.bookmarkData(
+                options: [.withSecurityScope],
+                includingResourceValuesForKeys: nil,
+                relativeTo: nil
+            )
+            localVLMModelBookmark = refreshedBookmark
+        }
+        return directory
     }
 }
