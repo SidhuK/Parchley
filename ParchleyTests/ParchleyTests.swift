@@ -12,13 +12,16 @@ final class ParchleyTests: XCTestCase {
 
     let preferences = AppPreferences(defaults: defaults)
     XCTAssertTrue(preferences.ocrEnabled)
+    XCTAssertFalse(preferences.localVLMEnabled)
     XCTAssertEqual(preferences.retentionDays, 30)
 
     preferences.ocrEnabled = false
+    preferences.localVLMEnabled = true
     preferences.retentionDays = 7
 
     let reopened = AppPreferences(defaults: defaults)
     XCTAssertFalse(reopened.ocrEnabled)
+    XCTAssertTrue(reopened.localVLMEnabled)
     XCTAssertEqual(reopened.retentionDays, 7)
   }
 
@@ -31,6 +34,26 @@ final class ParchleyTests: XCTestCase {
     let preferences = AppPreferences(defaults: defaults)
 
     XCTAssertEqual(preferences.retentionDays, 30)
+  }
+
+  func testLocalVLMModelFolderBookmarkPersistsAndResolves() throws {
+    let suiteName = "ParchleyTests.preferences.local-vlm.\(UUID().uuidString)"
+    let defaults = try XCTUnwrap(UserDefaults(suiteName: suiteName))
+    defer { defaults.removePersistentDomain(forName: suiteName) }
+    let directory = FileManager.default.temporaryDirectory
+      .appendingPathComponent(UUID().uuidString, isDirectory: true)
+    try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+    defer { try? FileManager.default.removeItem(at: directory) }
+    try Data("{}".utf8).write(to: directory.appendingPathComponent("config.json"))
+    try Data("{}".utf8).write(to: directory.appendingPathComponent("tokenizer.json"))
+    try Data().write(to: directory.appendingPathComponent("model.safetensors"))
+
+    let preferences = AppPreferences(defaults: defaults)
+    try preferences.setLocalVLMModelDirectory(directory)
+
+    let reopened = AppPreferences(defaults: defaults)
+    XCTAssertEqual(reopened.localVLMModelName, directory.lastPathComponent)
+    XCTAssertEqual(try reopened.resolveLocalVLMModelDirectory()?.standardizedFileURL, directory.standardizedFileURL)
   }
 
   func testImportReportsUnavailableWorkspace() {

@@ -6,6 +6,7 @@ struct SettingsView: View {
     @State private var modelState: ModelState = .notInstalled
     @State private var modelProgress: ModelProgress?
     @State private var isClearingHistory = false
+    @State private var localVLMError: String?
 
     private var totalDownloadBytes: Int64 {
         model.ocrManifest.artifacts.reduce(0) { $0 + $1.byteCount }
@@ -54,6 +55,60 @@ struct SettingsView: View {
                         cancel: cancelModelDownload,
                         remove: removeModel
                     )
+                }
+
+                Divider()
+
+                settingsSection("Local vision assistance", systemImage: "viewfinder") {
+                    Toggle(
+                        "Add local VLM assistance to OCR",
+                        isOn: $model.preferences.localVLMEnabled
+                    )
+                    .disabled(model.preferences.localVLMModelBookmark == nil)
+
+                    HStack {
+                        Label(
+                            model.preferences.localVLMModelName ?? "No model folder selected",
+                            systemImage: model.preferences.localVLMModelBookmark == nil
+                                ? "folder.badge.questionmark"
+                                : "folder"
+                        )
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                        .truncationMode(.middle)
+
+                        Spacer()
+
+                        Button("Choose Folder…", action: chooseLocalVLMModel)
+                        if model.preferences.localVLMModelBookmark != nil {
+                            Button("Remove", role: .destructive) {
+                                model.preferences.clearLocalVLMModelDirectory()
+                            }
+                        }
+                    }
+
+                    Text("When enabled, a local vision model makes a supplemental pass over pages already sent to OCR. It runs on your Mac, may use substantial unified memory, and can slow conversion. Parchley does not download model weights.")
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
+
+                    VStack(alignment: .leading, spacing: 5) {
+                        Link(
+                            "SmolVLM2 500M · Apache 2.0 · about 1.0 GB",
+                            destination: LocalVLMLinks.smolVLM2
+                        )
+                        Link(
+                            "SmolVLM 4-bit · Apache 2.0 · about 1.5 GB",
+                            destination: LocalVLMLinks.smolVLM4Bit
+                        )
+                    }
+                    .font(.callout)
+
+                    Text("The 500M option is a smaller starting point. The 4-bit option has a different size and quantization tradeoff; neither guarantees better OCR. Memory use, speed, and quality vary by document and Mac. Download an MLX-format model folder from a link above, then select that folder here.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
 
                 Divider()
@@ -132,6 +187,14 @@ struct SettingsView: View {
         } message: {
             Text("Saved drafts remain available for review.")
         }
+        .alert("Local vision model", isPresented: Binding(
+            get: { localVLMError != nil },
+            set: { if !$0 { localVLMError = nil } }
+        )) {
+            Button("OK") { localVLMError = nil }
+        } message: {
+            Text(localVLMError ?? "")
+        }
     }
 
     private func settingsSection<Content: View>(
@@ -208,6 +271,34 @@ struct SettingsView: View {
     private func clearHistory() {
         model.clearHistory()
     }
+
+    private func chooseLocalVLMModel() {
+        let panel = NSOpenPanel()
+        panel.title = "Choose an MLX model folder"
+        panel.prompt = "Use Model"
+        panel.canChooseFiles = false
+        panel.canChooseDirectories = true
+        panel.allowsMultipleSelection = false
+
+        let completion: (NSApplication.ModalResponse) -> Void = { response in
+            guard response == .OK, let directory = panel.url else { return }
+            do {
+                try model.preferences.setLocalVLMModelDirectory(directory)
+            } catch {
+                localVLMError = error.localizedDescription
+            }
+        }
+        if let window = NSApp.keyWindow {
+            panel.beginSheetModal(for: window, completionHandler: completion)
+        } else {
+            panel.begin(completionHandler: completion)
+        }
+    }
+}
+
+private enum LocalVLMLinks {
+    static let smolVLM2 = URL(string: "https://huggingface.co/HuggingFaceTB/SmolVLM2-500M-Video-Instruct-mlx")!
+    static let smolVLM4Bit = URL(string: "https://huggingface.co/mlx-community/SmolVLM-Instruct-4bit")!
 }
 
 private enum ProjectLinks {

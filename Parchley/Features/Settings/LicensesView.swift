@@ -47,7 +47,7 @@ private struct LicenseDetail: View {
                     .foregroundStyle(.secondary)
 
                 if let sourceURL = document.sourceURL {
-                    Link("View project website", destination: sourceURL)
+                    Link("View source and license", destination: sourceURL)
                 }
 
                 Divider()
@@ -173,6 +173,38 @@ private struct LicenseDocument: Identifiable {
             resource: nil,
             fallback: "swift-cmark is distributed under the BSD 2-Clause License. Its distribution includes cmark-gfm and the applicable third-party notices.",
             sourceURL: URL(string: "https://github.com/swiftlang/swift-cmark")
+        ),
+        LicenseDocument(
+            id: "mlx-swift",
+            name: "MLX Swift",
+            license: "MIT License",
+            resource: nil,
+            fallback: "MLX Swift is distributed under the MIT License.",
+            sourceURL: URL(string: "https://github.com/ml-explore/mlx-swift")
+        ),
+        LicenseDocument(
+            id: "mlx-swift-lm",
+            name: "MLX Swift LM 3.32.3",
+            license: "MIT License",
+            resource: nil,
+            fallback: "MLX Swift LM is distributed under the MIT License.",
+            sourceURL: URL(string: "https://github.com/ml-explore/mlx-swift-lm")
+        ),
+        LicenseDocument(
+            id: "swift-transformers",
+            name: "swift-transformers",
+            license: "Apache License 2.0",
+            resource: nil,
+            fallback: "swift-transformers is distributed under the Apache License 2.0.",
+            sourceURL: URL(string: "https://github.com/huggingface/swift-transformers")
+        ),
+        LicenseDocument(
+            id: "smolvlm",
+            name: "SmolVLM model options",
+            license: "Apache License 2.0",
+            resource: nil,
+            fallback: "The linked SmolVLM model options are provided by their publishers under the Apache License 2.0. Model files are user-supplied and are not included with Parchley.",
+            sourceURL: URL(string: "https://huggingface.co/HuggingFaceTB/SmolVLM2-500M-Video-Instruct-mlx")
         )
     ]
 }

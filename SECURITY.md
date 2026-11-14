@@ -3,7 +3,9 @@
 Parchley is a local-first macOS application. Imported PDFs, passwords, drafts,
 conversion results, and OCR output stay on the Mac during normal use. The
 optional OCR setup downloads only the pinned model artifacts described by the
-manifests in `Vendor/Manifests/`.
+manifests in `Vendor/Manifests/`. Optional local VLM assistance is disabled by
+default; when enabled, it reads pages and model files from the Mac and does not
+send them to a remote service. Users download any VLM model files themselves.
 
 ## Supported versions
 

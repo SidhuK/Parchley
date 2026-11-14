@@ -12,7 +12,7 @@ This guide covers the toolchain, project layout, local builds, tests, and releas
 
 ## How the app is put together
 
-The interface is written in SwiftUI. Three local Swift packages hold the document models, Markdown rendering, and the bridge to the conversion engine. The conversion engine is written in Rust and uses PDFium for PDF parsing and ONNX Runtime for local OCR.
+The interface is written in SwiftUI. Three local Swift packages hold the document models, Markdown rendering, and the bridge to the conversion engine. The conversion engine is written in Rust and uses PDFium for PDF parsing and ONNX Runtime for local OCR. An optional MLX Swift VLM pass can add supplemental notes to scanned pages; it is disabled by default and loads user-selected model files from a local folder.
 
 The app includes the pinned PP-OCRv6 Small model. Build scripts verify downloaded native libraries and model files against the byte counts and SHA-256 digests in `Vendor/Manifests` before packaging them.
 

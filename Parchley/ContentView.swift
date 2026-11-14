@@ -295,6 +295,8 @@ final class ParchleyAppModel {
                                   overrideMode: String?, draft: DraftSnapshot?, keepDraft: Bool) async {
         await startProgressMonitoring(for: record.id, coordinator: coordinator)
         var leased = false
+        let localVLMModelURL = localVLMModelURLIfAvailable()
+        defer { localVLMModelURL?.stopAccessingSecurityScopedResource() }
         let password = passwords[record.id]
         do {
             try Task.checkCancellation()
@@ -303,7 +305,9 @@ final class ParchleyAppModel {
             leased = modelURL != nil
             let options = ConversionOptions(ocrMode: mode,
                                             password: password?.isEmpty == false ? password : nil,
-                                            modelDirectory: modelURL)
+                                            modelDirectory: modelURL,
+                                            localVLMEnabled: localVLMModelURL != nil,
+                                            localVLMModelDirectory: localVLMModelURL)
             try Task.checkCancellation()
             if [.completed, .needsReview].contains(record.status) {
                 try await coordinator.retry(documentID: record.id, stagedInput: input, options: options)
@@ -413,7 +417,14 @@ final class ParchleyAppModel {
             do {
                 let modelURL = preferences.ocrEnabled ? await modelDirectoryIfAvailable() : nil
                 leased = modelURL != nil
-                let options = ConversionOptions(ocrMode: preferences.ocrEnabled ? "auto" : "off", modelDirectory: modelURL)
+                let localVLMModelURL = localVLMModelURLIfAvailable()
+                defer { localVLMModelURL?.stopAccessingSecurityScopedResource() }
+                let options = ConversionOptions(
+                    ocrMode: preferences.ocrEnabled ? "auto" : "off",
+                    modelDirectory: modelURL,
+                    localVLMEnabled: localVLMModelURL != nil,
+                    localVLMModelDirectory: localVLMModelURL
+                )
                 while !Task.isCancelled,
                       let record = documents.first(where: { $0.status == .queued && stagedURLs[$0.id] != nil }),
                       let input = stagedURLs[record.id] {
@@ -865,6 +876,29 @@ final class ParchleyAppModel {
         guard preferences.ocrEnabled, let manager = ocrManager else { return nil }
         return await manager.acquireLeaseIfAvailable()
     }
+
+    private func localVLMModelURLIfAvailable() -> URL? {
+        guard preferences.localVLMEnabled else { return nil }
+        do {
+            guard let directory = try preferences.resolveLocalVLMModelDirectory() else {
+                throw LocalVLMModelFolderError.unavailable
+            }
+            guard directory.startAccessingSecurityScopedResource() else {
+                throw LocalVLMModelFolderError.unavailable
+            }
+            do {
+                try LocalVLMModelFolder.validate(directory)
+            } catch {
+                directory.stopAccessingSecurityScopedResource()
+                throw error
+            }
+            return directory
+        } catch {
+            alertMessage = "Local VLM assistance is unavailable: \(error.localizedDescription)"
+            return nil
+        }
+    }
+
     func currentDate() -> Date { now() }
     func flushDrafts() async {
         draftTask?.cancel()
